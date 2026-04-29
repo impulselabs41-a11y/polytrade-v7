@@ -21,11 +21,16 @@ class AIConfig:
 
 @dataclass
 class MarketDataConfig:
-    binance_ws_url: str = "wss://stream.binance.com:9443/ws"
+    # Hyperliquid replaces Binance
+    hyperliquid_ws_url: str = "wss://api.hyperliquid.xyz/ws"
+    hyperliquid_rest_url: str = "https://api.hyperliquid.xyz"
+    
+    # Polymarket
     polymarket_api_url: str = "https://clob.polymarket.com"
     polymarket_gamma_url: str = "https://gamma-api.polymarket.com"
+    
     update_frequency_ms: int = 50
-    symbols_monitored: List[str] = field(default_factory=lambda: ["btcusdt", "ethusdt", "solusdt"])
+    symbols_monitored: List[str] = field(default_factory=lambda: ["BTC", "ETH"])
 
 @dataclass
 class RiskConfig:
