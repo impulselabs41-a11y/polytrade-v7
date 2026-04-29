@@ -2,7 +2,7 @@
   builder = "nixpacks"
   
 [build.nixpacks]
-  nixPkgs = ["python312", "nodejs_22", "postgresql", "redis"]
+  nixPkgs = ["python312", "nodejs_22"]
   
 [build.nixpacks.plan.providers]
   python = "pip"
@@ -10,11 +10,11 @@
 
 [build.nixpacks.plan.setup]
   python = "pip install -r requirements.txt"
-  node = "cd ui && npm install && npm run build"
+  node = "cd ui && npm install && npm run build && mkdir -p out"
 
 [deploy]
   numReplicas = 1
-  startCommand = "uvicorn ui.backend.server:app --host 0.0.0.0 --port $PORT --workers 1"
+  startCommand = "cd ui && npm run build && cd .. && uvicorn ui.backend.server:app --host 0.0.0.0 --port $PORT --workers 1"
   healthcheckPath = "/api/health"
   healthcheckTimeout = 10
   restartPolicyType = "ON_FAILURE"
