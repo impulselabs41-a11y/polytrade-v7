@@ -78,7 +78,7 @@ class DeepSeekBrain:
     def _build_analysis_prompt(self, context: MarketContext) -> str:
         return f"""CURRENT MARKET CONDITIONS:
         Symbol: {context.symbol}
-        Binance Spot: ${context.binance_price}
+        Exchange Price: ${context.binance_price}
         Polymarket Bid/Ask: ${context.polymarket_bid}/{context.polymarket_ask}
         24h Volume: ${context.volume_24h:,.0f}
         5min Change: {context.price_change_5m}%
