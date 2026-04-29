@@ -11,8 +11,20 @@ Production-grade prediction market trading bot with 6-layer AI architecture.
 - **Layer 6:** Trade Execution (CLOB Integration)
 
 ## Quick Start
-```bash
-cp .env.example .env
-# Edit .env with your API keys
 
+```bash
+# Clone the repo
+git clone https://github.com/YOUR_USERNAME/polytrade-v7.git
+cd polytrade-v7
+
+# Set up environment variables
+cp .env.example .env
+# Edit .env with your actual API keys
+
+# Run with Docker
 docker-compose up -d
+
+# Or run locally
+pip install -r requirements.txt
+cd ui && npm install && npm run build
+uvicorn ui.backend.server:app --reload
