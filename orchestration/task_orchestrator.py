@@ -98,7 +98,7 @@ class PolyTradeOrchestrator:
                 enriched_data = await self.market_intelligence.analyze(opportunity['data'])
                 context = MarketContext(
                     symbol=opportunity['symbol'],
-                    binance_price=enriched_data['binance_price'],
+                   exchange_price=enriched_data['exchange_price'],
                     polymarket_bid=enriched_data.get('poly_bid', 0),
                     polymarket_ask=enriched_data.get('poly_ask', 0),
                     volume_24h=enriched_data.get('volume_24h', 0),
