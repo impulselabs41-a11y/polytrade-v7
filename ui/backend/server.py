@@ -603,14 +603,35 @@ async def broadcast_system_health():
 # Static Files (UI) - Must be after all routes
 # ============================================
 
-# Serve the Next.js static export
-ui_build_path = os.path.join(os.path.dirname(__file__), "..", "out")
-if os.path.exists(ui_build_path):
-    # Mount static files for the UI
+import os
+from fastapi.staticfiles import StaticFiles
+
+# Determine the correct path to the UI build
+current_dir = os.path.dirname(os.path.abspath(__file__))
+ui_build_path = os.path.join(current_dir, "..", "out")
+
+# Check alternative path
+if not os.path.exists(ui_build_path):
+    ui_build_path = os.path.join(current_dir, "..", "..", "ui", "out")
+
+logger.info(f"Looking for UI build at: {ui_build_path}")
+
+if os.path.exists(ui_build_path) and os.path.exists(os.path.join(ui_build_path, "index.html")):
     app.mount("/", StaticFiles(directory=ui_build_path, html=True), name="ui")
     logger.info(f"UI static files mounted from: {ui_build_path}")
 else:
-    logger.warning(f"UI build not found at {ui_build_path}. Run 'cd ui && npm run build' to generate it.")
+    logger.warning(f"UI build not found. Directory contents: {os.listdir(os.path.dirname(ui_build_path)) if os.path.exists(os.path.dirname(ui_build_path)) else 'parent not found'}")
+
+if __name__ == "__main__":
+    port = int(os.getenv("PORT", 8080))
+    uvicorn.run(
+        "server:app",
+        host="0.0.0.0",
+        port=port,
+        reload=config.ui.debug,
+        log_level=config.log_level.lower(),
+        workers=1
+    )
 
 # ============================================
 # Main Entry Point
